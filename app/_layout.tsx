@@ -4,13 +4,16 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { linking } from './routes';
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import { Slot } from "expo-router";
-
+import { Suspense } from 'react';
+import { routes } from './routes';
+import { lazy } from 'react';
 import "../global.css";
 
 export {
@@ -25,6 +28,14 @@ export {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+// 配置 Expo Router
+export const unstable_settings = {
+  initialRouteName: "index",
+};
+
+// 配置深层链接
+export const scheme = "weapp";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -61,7 +72,9 @@ function RootLayoutNav() {
   return (
     <GluestackUIProvider mode={colorScheme === "dark" ? "dark" : "light"}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Slot />
+        <Suspense fallback={<routes style={{ flex: 1 }} />}>
+          <Slot />
+        </Suspense>
       </ThemeProvider>
     </GluestackUIProvider>
   );
