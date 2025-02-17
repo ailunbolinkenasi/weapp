@@ -10,7 +10,7 @@ interface ResponseData<T = any> {
 
 // 创建请求实例
 const instance: AxiosInstance = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:9800',
+  baseURL: process.env.EXPO_PUBLIC_API_URL || 'https://test.mletter.cn',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
